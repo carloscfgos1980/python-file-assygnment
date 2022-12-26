@@ -4,12 +4,27 @@ __human_name__ = "files"
 
 
 import os
+import shutil
 import zipfile
-import os
+
+# get the path in the current directory generically so it will always work
+path = os.getcwd()
+# add 'cache' at the end of the path
+directory = "cache"
+path_to_cache = os.path.join(path, directory)
+print(path_to_cache)
+path_to_zip = os.path.join(path, "data.zip")
+print(path_to_zip)
+
+CHECK_FOLDER = os.path.isdir('cache')
+print(CHECK_FOLDER)
 
 
 def clean_cache():
-    return os.mkdir('/Users/carlosinfante/Documents/Winc/files/cache')
+    if CHECK_FOLDER:
+        shutil.rmtree(path_to_cache)
+    os.mkdir(path_to_cache)
+    print("Directory '% s' created" % directory)
 
 
 print(clean_cache())
@@ -20,12 +35,11 @@ def cache_zip(zip_path, dir_path):
         zip_ref.extractall(dir_path)
 
 
-print(cache_zip('/Users/carlosinfante/Documents/Winc/files/data.zip',
-                '/Users/carlosinfante/Documents/Winc/files/cache'))
+print(cache_zip(path_to_zip, path_to_cache))
 
 
 def cached_files():
-    arr = os.listdir('/Users/carlosinfante/Documents/Winc/files/cache')
+    arr = os.listdir(path_to_cache)
     return arr
 
 
@@ -40,10 +54,11 @@ def find_password(source_location):
 
     # For loop to search for the string
     for file in direct:
-        f = open(source_location + file, 'r')
+        path_to_file = os.path.join(source_location, file)
+        f = open(path_to_file, 'r')
         if search_string in f.read():
             print('file:', file)
-            file_path = open(source_location + file, 'r')
+            file_path = open(path_to_file, 'r')
 
             # Efficient way to search string in a large text file
             for l_no, line in enumerate(file_path):
@@ -53,10 +68,8 @@ def find_password(source_location):
                     print('string found in a file')
                     print('Line Number:', l_no)
                     print('Line:', line)
-                    index_pass = line.find(':') + 2
-                    passd = line[index_pass:]
+                    passd = line.split(" ")[1]
     return passd
 
 
-print('password is:', find_password(
-    '/Users/carlosinfante/Documents/Winc/files/cache/'))
+print('password is:', find_password(path_to_cache))
