@@ -12,12 +12,10 @@ path = os.getcwd()
 # add 'cache' at the end of the path
 directory = "cache"
 path_to_cache = os.path.join(path, directory)
-print(path_to_cache)
+
 path_to_zip = os.path.join(path, "data.zip")
-print(path_to_zip)
 
 CHECK_FOLDER = os.path.isdir('cache')
-print(CHECK_FOLDER)
 
 
 def clean_cache():
@@ -27,23 +25,14 @@ def clean_cache():
     print("Directory '% s' created" % directory)
 
 
-print(clean_cache())
-
-
 def cache_zip(zip_path, dir_path):
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall(dir_path)
 
 
-print(cache_zip(path_to_zip, path_to_cache))
-
-
 def cached_files():
     arr = os.listdir(path_to_cache)
     return arr
-
-
-print(cached_files())
 
 
 def find_password(source_location):
@@ -72,4 +61,11 @@ def find_password(source_location):
     return passd
 
 
-print('password is:', find_password(path_to_cache))
+if __name__ == "main":
+    print(path_to_cache)
+    print(path_to_zip)
+    print(CHECK_FOLDER)
+    print(clean_cache())
+    print(cache_zip(path_to_zip, path_to_cache))
+    print(cached_files())
+    print('password is:', find_password(path_to_cache))
